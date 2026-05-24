@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Programmation Système – L2 MIDO Dauphine</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap');
+
+:root {
+  --bg:      #080b10;
+  --bg2:     #0d1117;
+  --bg3:     #111827;
+  --card:    #161d2b;
+  --card2:   #1c2438;
+  --border:  #1f2d45;
+  --text:    #e2e8f4;
+  --dim:     #6b7ea0;
+  --acc:     #4f9cf9;
+  --green:   #34d399;
+  --red:     #f87171;
+  --yellow:  #fbbf24;
+  --orange:  #fb923c;
+  --purple:  #a78bfa;
+  --teal:    #2dd4bf;
+  --mono:    'JetBrains Mono', monospace;
+  --sans:    'Sora', sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;min-height:100vh;}
+a{color:var(--acc);}
+
+/* ---- HEADER ---- */
+.header{
+  background:linear-gradient(135deg,#050913 0%,#0a1628 50%,#050913 100%);
+  border-bottom:1px solid var(--border);
+  padding:3rem 2rem 2.5rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(79,156,249,0.08) 0%,transparent 70%);
+}
+.header-eyebrow{
+  font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;
+  color:var(--acc);text-transform:uppercase;margin-bottom:0.8rem;
+  display:inline-block;background:rgba(79,156,249,0.08);
+  border:1px solid rgba(79,156,249,0.2);padding:0.2em 0.9em;border-radius:20px;
+}
+.header h1{
+  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
+  background:linear-gradient(135deg,#e2e8f4 0%,#4f9cf9 50%,#a78bfa 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:0.6rem;
+}
+.header-sub{color:var(--dim);font-size:0.95rem;margin-bottom:1.5rem;}
+.header-stats{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.5rem 1.1rem;font-family:var(--mono);font-size:0.82rem;}
+.stat strong{color:var(--acc);}
+
+/* ---- NAV CHAPITRES ---- */
+.chapter-nav{
+  display:flex;gap:0.4rem;flex-wrap:wrap;padding:1rem 2rem;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;justify-content:center;
+}
+.chapter-nav a{
+  color:var(--dim);font-size:0.78rem;font-weight:600;
+  padding:0.35rem 0.8rem;border-radius:6px;background:var(--card);
+  border:1px solid var(--border);text-decoration:none;transition:all 0.15s;
+  white-space:nowrap;
+}
+.chapter-nav a:hover{color:var(--text);border-color:var(--acc);background:rgba(79,156,249,0.08);}
+
+/* ---- MAIN ---- */
+.main{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+/* ---- CHAPTER HEADING ---- */
+.ch-block{margin:3rem 0 1.5rem;}
+.ch-title{
+  display:flex;align-items:center;gap:0.8rem;
+  font-size:1.25rem;font-weight:700;color:var(--acc);
+  padding-bottom:0.6rem;border-bottom:1px solid var(--border);margin-bottom:1.2rem;
+}
+.ch-num{
+  font-family:var(--mono);font-size:0.72rem;
+  background:rgba(79,156,249,0.12);border:1px solid rgba(79,156,249,0.25);
+  color:var(--acc);padding:0.15em 0.6em;border-radius:4px;
+}
+.ch-desc{color:var(--dim);font-size:0.87rem;margin-top:-0.8rem;margin-bottom:1rem;}
+
+/* ---- QCM CARD ---- */
+.q-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  margin-bottom:1rem;overflow:hidden;transition:border-color 0.2s;
+}
+.q-card:hover{border-color:#2a3a57;}
+
+.q-head{
+  padding:1rem 1.2rem 0.8rem;display:flex;align-items:flex-start;gap:0.9rem;
+}
+.q-num{
+  flex-shrink:0;width:28px;height:28px;border-radius:7px;
+  background:rgba(79,156,249,0.1);border:1px solid rgba(79,156,249,0.2);
+  font-family:var(--mono);font-size:0.72rem;color:var(--acc);
+  display:flex;align-items:center;justify-content:center;font-weight:700;margin-top:2px;
+}
+.q-text{font-size:0.95rem;font-weight:600;line-height:1.5;}
+.q-badge{
+  display:inline-block;margin-left:0.5rem;font-size:0.68rem;font-family:var(--mono);
+  padding:0.1em 0.45em;border-radius:4px;font-weight:700;vertical-align:middle;
+}
+.badge-hot{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.3);}
+.badge-warn{background:rgba(251,191,36,0.12);color:var(--yellow);border:1px solid rgba(251,191,36,0.3);}
+.badge-ok{background:rgba(52,211,153,0.1);color:var(--green);border:1px solid rgba(52,211,153,0.25);}
+
+.q-code{
+  background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:0.8rem 1.2rem;font-family:var(--mono);font-size:0.82rem;
+  white-space:pre;overflow-x:auto;line-height:1.6;color:#c9d1d9;
+}
+
+.q-options{list-style:none;padding:0.3rem 1.2rem 0.5rem;display:flex;flex-direction:column;gap:0.3rem;}
+.q-options li{
+  background:var(--bg2);border:1px solid var(--border);border-radius:7px;
+  padding:0.5rem 0.9rem;font-size:0.88rem;cursor:default;
+}
+
+/* ---- DETAILS REVEAL ---- */
+.reveal-wrap{padding:0.5rem 1.2rem 1rem;}
+details{background:transparent;border:none;}
+details summary{
+  list-style:none;display:inline-flex;align-items:center;gap:0.4rem;
+  cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--dim);
+  padding:0.4rem 0.8rem;border-radius:6px;background:var(--card2);
+  border:1px solid var(--border);transition:all 0.15s;user-select:none;
+}
+details summary:hover{color:var(--acc);border-color:rgba(79,156,249,0.3);}
+details summary::before{content:'▶';font-size:0.65em;transition:transform 0.2s;}
+details[open] summary::before{transform:rotate(90deg);}
+details[open] summary{color:var(--acc);border-color:rgba(79,156,249,0.3);}
+details > *:not(summary){animation:slideDown 0.2s ease;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+.answer-box{
+  margin-top:0.7rem;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+.answer-correct{
+  display:flex;align-items:center;gap:0.5rem;
+  background:rgba(52,211,153,0.06);border-bottom:1px solid rgba(52,211,153,0.15);
+  padding:0.6rem 1rem;font-size:0.88rem;font-weight:700;color:var(--green);
+}
+.answer-expl{padding:0.8rem 1rem;font-size:0.87rem;line-height:1.65;color:var(--text);}
+.answer-expl code{
+  font-family:var(--mono);font-size:0.83em;
+  background:rgba(79,156,249,0.1);padding:0.1em 0.35em;border-radius:3px;color:var(--orange);
+}
+.answer-expl strong{color:var(--yellow);}
+.answer-expl .right{color:var(--green);font-weight:700;}
+.answer-expl .wrong{color:var(--red);font-weight:600;}
+
+/* ---- SEPARATOR ---- */
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2rem 0;}
+
+/* ---- CALLOUT ---- */
+.callout{
+  border-left:3px solid;padding:0.75rem 1rem;border-radius:0 8px 8px 0;
+  margin:0.8rem 0;background:var(--bg2);font-size:0.88rem;
+}
+.callout-red{border-color:var(--red);}
+.callout-yellow{border-color:var(--yellow);}
+.callout-green{border-color:var(--green);}
+.callout-blue{border-color:var(--acc);}
+.callout strong{color:var(--yellow);}
+
+/* ---- TABLE ---- */
+table{width:100%;border-collapse:collapse;margin:0.7rem 0;font-size:0.87rem;}
+th{background:var(--card2);color:var(--acc);padding:0.55rem 0.8rem;text-align:left;border:1px solid var(--border);}
+td{padding:0.5rem 0.8rem;border:1px solid var(--border);vertical-align:top;}
+tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+
+/* ---- INTRO BOX ---- */
+.intro-box{
+  background:linear-gradient(135deg,rgba(79,156,249,0.05),rgba(167,139,250,0.05));
+  border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:2rem;
+  font-size:0.9rem;
+}
+.intro-box h2{color:var(--acc);font-size:1rem;margin-bottom:0.6rem;}
+.intro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.5rem;margin-top:0.8rem;}
+.intro-item{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:0.5rem 0.8rem;font-size:0.82rem;display:flex;gap:0.4rem;align-items:center;}
+
+/* ---- FOOTER ---- */
+.footer{text-align:center;padding:2rem;color:var(--dim);font-size:0.8rem;border-top:1px solid var(--border);}
+
+@media(max-width:600px){
+  .header{padding:2rem 1rem 1.5rem;}
+  .main{padding:1.5rem 1rem 3rem;}
+  .q-head{flex-direction:column;gap:0.5rem;}
+  .chapter-nav{padding:0.7rem 1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-eyebrow">L2 MIDO · Université Paris-Dauphine · Pr. Zellama</div>
+  <h1>QCM Programmation Système</h1>
+  <p class="header-sub">80 questions · Corrections détaillées · Tous chapitres du cours</p>
+  <div class="header-stats">
+    <div class="stat"><strong>80</strong> questions</div>
+    <div class="stat"><strong>7</strong> chapitres</div>
+    <div class="stat"><strong>🔥</strong> pièges identifiés</div>
+    <div class="stat"><strong>✅</strong> corrections complètes</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="chapter-nav">
+  <a href="#ch1">🖥️ OS &amp; UNIX</a>
+  <a href="#ch2">📁 Fichiers</a>
+  <a href="#ch3">⚙️ Processus</a>
+  <a href="#ch4">🐚 Shell</a>
+  <a href="#ch5">🧠 Mémoire</a>
+  <a href="#ch6">🧵 Threads</a>
+  <a href="#ch7">🔧 Appels sys.</a>
+  <a href="#ch8">📋 Support cours</a>
+</div>
+
+<div class="main">
+
+<!-- INTRO -->
+<div class="intro-box">
+  <h2>💡 Comment utiliser ce QCM efficacement</h2>
+  <p>Lisez la question et trouvez la réponse <strong>mentalement</strong> avant de révéler la correction. C'est la méthode <strong>active recall</strong> — 2× plus efficace que la lecture passive.</p>
+  <div class="intro-grid">
+    <div class="intro-item"><span style="color:var(--red)">🔥</span> Très fréquent examen</div>
+    <div class="intro-item"><span style="color:var(--yellow)">⚠️</span> Important / piège</div>
+    <div class="intro-item"><span style="color:var(--green)">💡</span> Notion secondaire</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH1 – INTRODUCTION OS & UNIX                                 -->
+<!-- ============================================================ -->
+<div class="ch-block" id="ch1">
+  <div class="ch-title"><span class="ch-num">CH 01</span> 🖥️ Introduction – OS &amp; UNIX</div>
+  <p class="ch-desc">Rôle de l'OS, architecture UNIX, mode noyau/utilisateur, historique</p>
+</div>
+
+<!-- Q1 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">1</div><div class="q-text">Quelles sont les deux fonctions principales d'un système d'exploitation ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Gérer le clavier et l'écran</li>
+    <li>B) Machine étendue (abstraction) + Gestionnaire de ressources</li>
+    <li>C) Compiler les programmes et les exécuter</li>
+    <li>D) Assurer la connexion réseau et stocker les fichiers</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><strong>Machine étendue :</strong> l'OS masque la complexité du matériel et fournit une interface simplifiée.<br><strong>Gestionnaire de ressources :</strong> il contrôle et arbitre l'accès au CPU, à la mémoire, aux périphériques et aux données.<br><br>👉 Les 4 ressources à citer : CPU, mémoire, système de fichiers, entrées/sorties. Oublier l'une d'elles coûte des points.</div></div></details></div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">2</div><div class="q-text">Le shell UNIX fait-il partie du noyau ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Oui, le shell est intégré au noyau Linux</li>
+    <li>B) Non, le shell est un programme utilisateur qui utilise l'API système</li>
+    <li>C) Oui, mais uniquement bash</li>
+    <li>D) Non, le shell est un compilateur indépendant</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><strong>Non.</strong> Le shell est un programme utilisateur (couche application) qui utilise les appels système pour communiquer avec le noyau. Architecture UNIX en 3 couches :<br>① Matériel → ② Noyau (kernel) → ③ Shell &amp; applications.<br><br>Seul le <strong>noyau</strong> interagit directement avec le matériel. Les interpréteurs et compilateurs ne font pas partie du noyau.</div></div></details></div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">3</div><div class="q-text">À quelle section du manuel appartiennent les appels système ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Section 1 (commandes shell)</li>
+    <li>B) Section 2 (appels système)</li>
+    <li>C) Section 3 (bibliothèques C)</li>
+    <li>D) Section 8 (administration)</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Sections du manuel Unix :<br>• <strong>1</strong> → Commandes shell (<code>man printf</code> → commande shell)<br>• <strong>2</strong> → Appels système (<code>man 2 fork</code>, <code>man 2 open</code>)<br>• <strong>3</strong> → Fonctions bibliothèque C (<code>man 3 printf</code> → fonction C)<br>• <strong>8</strong> → Commandes d'administration root<br><br>⚠️ <span class="wrong">Piège classique :</span> <code>man printf</code> ≠ <code>man 3 printf</code> !</div></div></details></div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">4</div><div class="q-text">En mode noyau (kernel mode), le processeur peut :</div></div>
+  <ul class="q-options">
+    <li>A) Exécuter uniquement les calculs arithmétiques</li>
+    <li>B) Exécuter n'importe quelle instruction, y compris l'accès direct au matériel</li>
+    <li>C) Seulement lire la mémoire, pas y écrire</li>
+    <li>D) Exécuter les mêmes instructions qu'en mode utilisateur</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Le processeur a deux modes :<br>• <strong>Mode noyau (privilégié) :</strong> toutes les instructions sont autorisées, accès direct au matériel.<br>• <strong>Mode utilisateur :</strong> sous-ensemble limité d'instructions non critiques.<br><br>Une application passe en mode noyau via un appel système (interruption logicielle), exécute l'opération privilégiée, puis repasse en mode utilisateur.</div></div></details></div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">5</div><div class="q-text">Le concept de "temps partagé" (time sharing) repose sur :</div></div>
+  <ul class="q-options">
+    <li>A) Un seul programme en mémoire à la fois</li>
+    <li>B) Plusieurs utilisateurs avec des disques séparés</li>
+    <li>C) Des quanta de temps CPU alloués à chaque processus, donnant l'illusion de parallélisme</li>
+    <li>D) L'exécution parallèle réelle sur plusieurs CPU</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C</div><div class="answer-expl">Le temps partagé découpe le CPU en <strong>quanta</strong> (intervalles très courts). Le CPU bascule rapidement entre les programmes, donnant l'illusion à chaque utilisateur qu'il est seul sur la machine.<br><br>Un seul CPU (1 cœur) n'exécute qu'<strong>un seul programme à la fois</strong> : c'est l'OS qui crée l'illusion de parallélisme.</div></div></details></div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">6</div><div class="q-text">UNIX a été créé par Ken Thompson et Dennis Ritchie en :</div></div>
+  <ul class="q-options">
+    <li>A) 1985</li>
+    <li>B) 1973 (avec la réécriture en C)</li>
+    <li>C) 1969 (chez Bell Labs, AT&amp;T)</li>
+    <li>D) 1991 (par Linus Torvalds)</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C</div><div class="answer-expl">• <strong>1969</strong> : création d'UNIX par Ken Thompson et Dennis Ritchie chez Bell Labs (AT&amp;T).<br>• <strong>1973</strong> : réécriture d'UNIX en langage C (inventé par Dennis Ritchie).<br>• <strong>1991</strong> : Linux créé par Linus Torvalds — clone <em>libre</em> d'UNIX.<br><br>Linux ≠ UNIX, mais Linux est <strong>compatible UNIX</strong> (POSIX).</div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH2 – SYSTÈME DE FICHIERS                                    -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch2">
+  <div class="ch-title"><span class="ch-num">CH 02</span> 📁 Système de fichiers UNIX</div>
+  <p class="ch-desc">Arborescence, permissions rwx, chmod, chemins, grep, sed, find</p>
+</div>
+
+<!-- Q7 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">7</div><div class="q-text">Que signifie <code>chmod 755 script.sh</code> ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) rwxrwxrwx</li>
+    <li>B) rw-r--r--</li>
+    <li>C) rwxr-xr-x</li>
+    <li>D) rwxrwxr-x</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — rwxr-xr-x</div><div class="answer-expl">Calcul : <strong>r=4, w=2, x=1</strong><br>• 7 = 4+2+1 = <strong>rwx</strong> (propriétaire : lecture + écriture + exécution)<br>• 5 = 4+1 = <strong>r-x</strong> (groupe : lecture + exécution)<br>• 5 = 4+1 = <strong>r-x</strong> (autres : lecture + exécution)<br><br>Mémo rapide :<br>• <code>chmod 755</code> → rwxr-xr-x (script standard)<br>• <code>chmod 644</code> → rw-r--r-- (fichier texte)<br>• <code>chmod 750</code> → rwxr-x--- (script groupe seulement)<br><br>⚠️ <span class="wrong">Piège :</span> <code>chmod 75</code> (2 chiffres) est <strong>invalide</strong>. Toujours 3 chiffres.</div></div></details></div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">8</div><div class="q-text">Interpréter cette ligne : <code>drwxr-x--- 3 root staff 4096 10 mai data</code> <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Fichier ordinaire, root peut tout faire, staff peut lire seulement</li>
+    <li>B) Répertoire, root peut tout faire, staff peut lire et traverser, les autres : rien</li>
+    <li>C) Lien symbolique, permissions complètes pour tous</li>
+    <li>D) Répertoire, staff peut écrire, les autres peuvent lire</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Décodage complet :<br>• <code>d</code> → <strong>répertoire</strong> (d=directory, -=fichier, l=lien)<br>• <code>rwx</code> → propriétaire (<strong>root</strong>) : lecture + écriture + traversée<br>• <code>r-x</code> → groupe (<strong>staff</strong>) : lecture + traversée (pas d'écriture)<br>• <code>---</code> → autres : <strong>aucun droit</strong><br>• <code>3</code> → 3 liens physiques<br>• <code>4096</code> → taille en octets<br>• <code>data</code> → nom du répertoire<br><br>⚠️ Pour un répertoire, <code>x</code> = permission d'<strong>entrer</strong> (cd), pas d'exécuter.</div></div></details></div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">9</div><div class="q-text">Quel droit est nécessaire pour entrer dans un répertoire avec <code>cd</code> ? <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <ul class="q-options">
+    <li>A) Lecture (r)</li>
+    <li>B) Écriture (w)</li>
+    <li>C) Exécution (x)</li>
+    <li>D) Lecture ET exécution (r+x)</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — Exécution (x) seule</div><div class="answer-expl">Pour un répertoire, les droits ont une signification différente des fichiers :<br>• <code>r</code> → lire la <strong>liste</strong> des fichiers (ls)<br>• <code>w</code> → créer/supprimer des fichiers dans le répertoire<br>• <code>x</code> → <strong>traverser / entrer</strong> dans le répertoire (cd)<br><br>⚠️ <span class="wrong">Piège classique :</span> beaucoup répondent "r" en pensant "voir le contenu" mais pour <em>entrer</em>, il faut <strong>x</strong>.</div></div></details></div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">10</div><div class="q-text">Un chemin absolu se distingue d'un chemin relatif parce qu'il :</div></div>
+  <ul class="q-options">
+    <li>A) Commence par <code>.</code> ou <code>..</code></li>
+    <li>B) Commence toujours par <code>/</code></li>
+    <li>C) Contient le nom de l'utilisateur</li>
+    <li>D) Ne contient jamais de <code>/</code></li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <strong>Chemin absolu :</strong> part de la racine <code>/</code>. Commence toujours par <code>/</code>. Ex : <code>/home/user/tp1/main.c</code><br>• <strong>Chemin relatif :</strong> part du répertoire courant. Ne commence <em>jamais</em> par <code>/</code>. Ex : <code>../tp1/main.c</code><br><br>Symboles spéciaux : <code>.</code> = répertoire courant, <code>..</code> = parent, <code>~</code> = home.</div></div></details></div>
+</div>
+
+<!-- Q11 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">11</div><div class="q-text">Que fait <code>grep -v "^#" fichier.c | wc -l</code> ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Compte les lignes commençant par #</li>
+    <li>B) Compte les lignes ne commençant pas par # (lignes actives)</li>
+    <li>C) Supprime les commentaires du fichier</li>
+    <li>D) Liste les fichiers .c contenant des commentaires</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>grep -v</code> → <strong>inverse</strong> : affiche les lignes qui NE correspondent PAS au motif<br>• <code>^#</code> → lignes qui commencent par <code>#</code> (commentaires/directives)<br>• <code>| wc -l</code> → compte le nombre de lignes<br><br>Résultat : nombre de lignes <strong>actives</strong> (non commentaires) dans fichier.c</div></div></details></div>
+</div>
+
+<!-- Q12 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">12</div><div class="q-text"><code>sed 's/18\([0-9][0-9]\)/19\1/g'</code> transforme "1885" en :</div></div>
+  <ul class="q-options">
+    <li>A) 1985</li>
+    <li>B) 1895</li>
+    <li>C) 1819</li>
+    <li>D) Reste 1885</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : A — 1985</div><div class="answer-expl">• <code>18</code> → correspond aux deux premiers chiffres<br>• <code>\([0-9][0-9]\)</code> → capture les deux chiffres suivants (ici : <strong>85</strong>)<br>• <code>\1</code> → réinjecte le groupe capturé<br>• Résultat : <code>18</code><strong>85</strong> → <code>19</code><strong>85</strong> = <strong>1985</strong><br><br>C'est l'exemple canonique du cours : transformer les dates 18XX en 19XX dans Les Misérables.</div></div></details></div>
+</div>
+
+<!-- Q13 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">13</div><div class="q-text">Différence entre <code>locate</code> et <code>find</code> :</div></div>
+  <ul class="q-options">
+    <li>A) locate est plus lent (lit le disque) ; find utilise un index</li>
+    <li>B) locate utilise un index pré-calculé (rapide mais potentiellement obsolète) ; find parcourt en temps réel</li>
+    <li>C) Aucune différence fonctionnelle</li>
+    <li>D) find ne fonctionne que dans le répertoire courant</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><table><tr><th></th><th>locate</th><th>find</th></tr><tr><td>Mécanisme</td><td>Index pré-calculé</td><td>Parcourt en temps réel</td></tr><tr><td>Vitesse</td><td>Très rapide</td><td>Plus lent</td></tr><tr><td>Fraîcheur</td><td>Index peut être obsolète</td><td>Toujours à jour</td></tr></table></div></div></details></div>
+</div>
+
+<!-- Q14 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">14</div><div class="q-text"><code>head -n 5 fichier | tail -n 1</code> extrait :</div></div>
+  <ul class="q-options">
+    <li>A) Les 5 premières lignes</li>
+    <li>B) La dernière ligne du fichier</li>
+    <li>C) La 5ème ligne exactement</li>
+    <li>D) Les lignes 1 à 4</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — La 5ème ligne exactement</div><div class="answer-expl"><code>head -n 5</code> extrait les <strong>5 premières lignes</strong>, puis <code>tail -n 1</code> prend la <strong>dernière</strong> de ce bloc → c'est la 5ème ligne du fichier.<br><br>Généralisation pour extraire la ligne N : <code>head -n N fichier | tail -n 1</code></div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH3 – PROCESSUS UNIX                                         -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch3">
+  <div class="ch-title"><span class="ch-num">CH 03</span> ⚙️ Processus UNIX</div>
+  <p class="ch-desc">Programme vs processus, états R/S/D/T/Z, fork, wait, exec, zombie, orphelin</p>
+</div>
+
+<!-- Q15 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">15</div><div class="q-text">Quelle est la différence fondamentale entre un programme et un processus ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Un programme s'exécute plus vite qu'un processus</li>
+    <li>B) Un programme est un fichier statique ; un processus est un programme en cours d'exécution avec des ressources</li>
+    <li>C) Un processus ne peut exécuter qu'un seul programme</li>
+    <li>D) Ils sont identiques, juste deux mots différents</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <strong>Programme :</strong> fichier binaire <em>statique</em> sur le disque. Résultat d'une compilation. Objet inerte.<br>• <strong>Processus :</strong> programme <em>en cours d'exécution</em>. Dispose d'un état, d'un PID, de mémoire allouée, de descripteurs de fichiers, de registres.<br><br>Analogie : le programme = la recette de cuisine (statique) ; le processus = le cuisinier en train de cuisiner (dynamique).</div></div></details></div>
+</div>
+
+<!-- Q16 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">16</div><div class="q-text">Que retourne <code>fork()</code> dans le processus fils ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Le PID du père</li>
+    <li>B) Le PID du fils</li>
+    <li>C) 0</li>
+    <li>D) 1</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — 0 dans le fils</div><div class="answer-expl">Valeurs de retour de <code>fork()</code> — à savoir <strong>absolument par cœur</strong> :<br>• <span class="right">Dans le fils : 0</span><br>• <span class="right">Dans le père : PID du fils (valeur &gt; 0)</span><br>• <span class="wrong">En cas d'erreur : -1</span> (pas de fils créé)<br><br>C'est la base du pattern <code>if (pid == 0) { /* fils */ } else { /* père */ }</code></div></div></details></div>
+</div>
+
+<!-- Q17 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">17</div><div class="q-text"><code>fork(); fork(); printf("Hello\n");</code> — combien de "Hello" ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) 1</li>
+    <li>B) 2</li>
+    <li>C) 3</li>
+    <li>D) 4</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : D — 4 "Hello"</div><div class="answer-expl">Formule : <strong>n forks successifs → 2ⁿ processus au total</strong><br>2 forks → 2² = <strong>4 processus</strong>, chacun affiche "Hello" → <strong>4 fois</strong>.<br><br>Arbre :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin-top:0.5rem;">P0 ──fork1──→ P1
+P0 ──fork2──→ P2
+P1 ──fork2──→ P3
+(4 processus, 4 "Hello")</pre></div></div></details></div>
+</div>
+
+<!-- Q18 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">18</div><div class="q-text"><code>if (fork()) fork(); printf("Hello\n");</code> — combien de "Hello" ? <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <ul class="q-options">
+    <li>A) 2</li>
+    <li>B) 3</li>
+    <li>C) 4</li>
+    <li>D) 6</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — 3 "Hello"</div><div class="answer-expl">• 1er <code>fork()</code> : crée P1. Dans P0 (père), retourne PID &gt; 0 → vrai → P0 fait le 2ème fork.<br>• Dans P1 (fils), retourne 0 → faux → P1 n'exécute PAS le 2ème fork.<br>• 2ème <code>fork()</code> exécuté uniquement par P0 : crée P2.<br><br>3 processus : P0, P1, P2 → <strong>3 "Hello"</strong><br><br>⚠️ <span class="wrong">Erreur fréquente :</span> penser que le fils fait aussi le 2ème fork. Seul le père exécute un <code>if</code> avec une condition vraie.</div></div></details></div>
+</div>
+
+<!-- Q19 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">19</div><div class="q-text">Un processus zombie est : <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Un processus bloqué en attente d'E/S disque</li>
+    <li>B) Un processus terminé dont le père n'a pas encore appelé wait()</li>
+    <li>C) Un processus suspendu par SIGSTOP</li>
+    <li>D) Un processus qui consomme 100% de CPU</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Un processus <strong>zombie</strong> (état Z) :<br>• A terminé son exécution<br>• Libère toutes ses ressources (mémoire, descripteurs…)<br>• Conserve son entrée dans la table des processus (pour que le père puisse récupérer son code de retour)<br>• Ne peut <strong>pas être tué</strong> (déjà mort !)<br>• Disparaît quand le père appelle <code>wait()</code><br><br>Prévention : toujours appeler <code>wait()</code> ou <code>waitpid()</code> dans le père.</div></div></details></div>
+</div>
+
+<!-- Q20 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">20</div><div class="q-text">Peut-on tuer un processus zombie avec <code>kill -9 PID</code> ? <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <ul class="q-options">
+    <li>A) Oui, kill -9 tue tout</li>
+    <li>B) Non, le zombie est déjà terminé — impossible de tuer ce qui est mort</li>
+    <li>C) Oui, mais seulement en tant que root</li>
+    <li>D) Oui, après un délai de quelques secondes</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Un zombie est un processus <em>déjà mort</em>. Il ne reçoit plus de signaux, ne consomme pas de CPU, n'a plus de mémoire.<br><br>La seule façon de "nettoyer" un zombie : que son <strong>père appelle <code>wait()</code></strong>. Si le père est lui-même mort, init (PID 1) adopte le zombie et le nettoie.</div></div></details></div>
+</div>
+
+<!-- Q21 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">21</div><div class="q-text">Ce code affiche-t-il "Fin" ?</div></div>
+  <div class="q-code">char *args[] = {"ls", "-l", NULL};
+execvp("ls", args);
+printf("Fin\n");</div>
+  <ul class="q-options">
+    <li>A) Oui, toujours, après l'exécution de ls</li>
+    <li>B) Non, jamais si execvp() réussit</li>
+    <li>C) Oui, mais seulement si ls retourne 0</li>
+    <li>D) Oui, dans le fils uniquement</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — Non, jamais si execvp réussit</div><div class="answer-expl">En cas de <strong>succès</strong>, <code>execvp()</code> <strong>remplace intégralement</strong> l'espace mémoire et le code du processus par celui du nouveau programme (ls). L'ancien code n'existe plus en mémoire.<br><br>Le <code>printf("Fin\n")</code> n'est atteint <em>que si</em> <code>execvp()</code> a <strong>échoué</strong> (retourne -1).<br><br>⚠️ Piège classique que le prof place exprès dans les examens.</div></div></details></div>
+</div>
+
+<!-- Q22 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">22</div><div class="q-text">Un processus orphelin est adopté par :</div></div>
+  <ul class="q-options">
+    <li>A) Le processus de PID 2</li>
+    <li>B) init (PID 1)</li>
+    <li>C) Le shell qui l'a lancé</li>
+    <li>D) Il devient zombie automatiquement</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — init (PID 1)</div><div class="answer-expl">Quand un <strong>père meurt avant son fils</strong>, ce fils devient <strong>orphelin</strong>. Le noyau le rattache automatiquement à <strong>init</strong> (PID 1), le premier processus du système.<br><br>Init appelle régulièrement <code>wait()</code>, ce qui évite que l'orphelin devienne zombie.</div></div></details></div>
+</div>
+
+<!-- Q23 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">23</div><div class="q-text">L'état <strong>D</strong> d'un processus (dans la sortie de <code>ps</code>) signifie : <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <ul class="q-options">
+    <li>A) Terminé (Dead)</li>
+    <li>B) En attente d'E/S disque, non interruptible</li>
+    <li>C) En cours d'exécution normale</li>
+    <li>D) Suspendu temporairement</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Tous les états à connaître :<br><table><tr><th>État</th><th>Signification</th><th>Kill -9 ?</th></tr><tr><td><strong>R</strong></td><td>Running / prêt</td><td>✅ Oui</td></tr><tr><td><strong>S</strong></td><td>Sleeping (attente interruptible)</td><td>✅ Oui</td></tr><tr><td><strong>D</strong></td><td>Disk sleep (E/S bloquante)</td><td>❌ Non</td></tr><tr><td><strong>T</strong></td><td>Stopped (SIGSTOP)</td><td>✅ Oui</td></tr><tr><td><strong>Z</strong></td><td>Zombie (terminé, non récolté)</td><td>❌ Inutile</td></tr></table>L'état D est le seul où <code>kill -9</code> ne fonctionne pas car le processus est dans le noyau.</div></div></details></div>
+</div>
+
+<!-- Q24 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">24</div><div class="q-text">Quel signal ne peut être ni capturé ni ignoré par un processus ?</div></div>
+  <ul class="q-options">
+    <li>A) SIGTERM (15)</li>
+    <li>B) SIGINT (2)</li>
+    <li>C) SIGKILL (9)</li>
+    <li>D) SIGSEGV (11)</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — SIGKILL (9)</div><div class="answer-expl">• <strong>SIGKILL (9)</strong> : terminaison immédiate, ne peut être ni capturé, ni ignoré, ni bloqué.<br>• <strong>SIGSTOP (19)</strong> : suspension, même caractéristique (ne peut être ignoré).<br>• SIGTERM (15) : peut être capturé → permet au processus de se nettoyer.<br><br>Bonne pratique : utiliser <code>kill PID</code> (SIGTERM) d'abord, et <code>kill -9</code> uniquement si le processus ne répond pas.</div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH4 – SHELL SCRIPTING                                        -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch4">
+  <div class="ch-title"><span class="ch-num">CH 04</span> 🐚 Programmation Shell (Bash)</div>
+  <p class="ch-desc">Variables, tests, boucles, redirections, pipes, scripts</p>
+</div>
+
+<!-- Q25 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">25</div><div class="q-text"><code>VAR = valeur</code> en bash (avec espaces) : <span class="q-badge badge-hot">🔥 piège n°1</span></div></div>
+  <ul class="q-options">
+    <li>A) Définit correctement la variable VAR</li>
+    <li>B) Provoque une erreur de syntaxe</li>
+    <li>C) Exécute la commande VAR avec l'argument valeur</li>
+    <li>D) A le même effet que VAR=valeur</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — Erreur de syntaxe</div><div class="answer-expl">En bash, les espaces autour de <code>=</code> sont <strong>strictement interdits</strong> dans une affectation.<br><br>• <code>VAR=valeur</code> ✅ correct<br>• <code>VAR = valeur</code> ❌ bash interprète <code>VAR</code> comme une commande avec <code>=</code> et <code>valeur</code> comme arguments<br><br>Autres règles strictes du shell :<br>• Pas d'espace dans <code>[ -f "$f" ]</code> → <code>[-f "$f"]</code> ❌<br>• Guillemets <code>"</code> → substitution des variables ; apostrophes <code>'</code> → littéral</div></div></details></div>
+</div>
+
+<!-- Q26 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">26</div><div class="q-text">Script appelé <code>./test.sh rouge bleu vert</code> — que vaut <code>$#</code>, <code>$1</code>, <code>$0</code> ?</div></div>
+  <ul class="q-options">
+    <li>A) $#=4, $1=test.sh, $0=rouge</li>
+    <li>B) $#=3, $1=rouge, $0=./test.sh</li>
+    <li>C) $#=3, $1=bleu, $0=rouge</li>
+    <li>D) $#=2, $1=rouge, $0=./test.sh</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Variables spéciales à savoir par cœur :<br>• <code>$0</code> = nom du script → <strong>./test.sh</strong><br>• <code>$1</code> = 1er argument → <strong>rouge</strong><br>• <code>$2</code> = 2ème argument → bleu<br>• <code>$#</code> = nombre d'arguments (sans $0) → <strong>3</strong><br>• <code>$*</code> = tous les arguments (rouge bleu vert)<br>• <code>$?</code> = code de retour de la dernière commande<br>• <code>$$</code> = PID du shell courant</div></div></details></div>
+</div>
+
+<!-- Q27 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">27</div><div class="q-text">Que fait ce test : <code>[ -f "$fichier" ]</code> ? <span class="q-badge badge-warn">⚠️ piège espaces</span></div></div>
+  <ul class="q-options">
+    <li>A) Vrai si $fichier est un répertoire</li>
+    <li>B) Vrai si $fichier est un fichier ordinaire qui existe</li>
+    <li>C) Vrai si $fichier est exécutable</li>
+    <li>D) Erreur si $fichier est vide</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Tests sur les fichiers :<br>• <code>-f</code> → fichier ordinaire existe<br>• <code>-d</code> → répertoire existe<br>• <code>-e</code> → fichier ou répertoire existe<br>• <code>-r</code> → accessible en lecture<br>• <code>-x</code> → exécutable<br>• <code>-z "$var"</code> → chaîne vide<br><br>⚠️ Les espaces après <code>[</code> et avant <code>]</code> sont <strong>obligatoires</strong>. <code>[-f "$f"]</code> → erreur de syntaxe !</div></div></details></div>
+</div>
+
+<!-- Q28 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">28</div><div class="q-text">Différence entre <code>ls &gt; out.txt</code> et <code>ls &gt;&gt; out.txt</code> : <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Aucune différence</li>
+    <li>B) &gt; écrase le fichier ; &gt;&gt; ajoute à la fin</li>
+    <li>C) &gt;&gt; écrase ; &gt; ajoute</li>
+    <li>D) &gt;&gt; redirige stderr</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Redirections à maîtriser :<br><table><tr><th>Opérateur</th><th>Effet</th></tr><tr><td><code>&gt;</code></td><td>Stdout vers fichier (<strong>écrase</strong> ou crée)</td></tr><tr><td><code>&gt;&gt;</code></td><td>Stdout vers fichier (<strong>ajoute</strong> sans supprimer)</td></tr><tr><td><code>&lt;</code></td><td>Stdin depuis fichier</td></tr><tr><td><code>2&gt;</code></td><td>Stderr vers fichier</td></tr><tr><td><code>2&gt;&amp;1</code></td><td>Stderr fusionné avec stdout</td></tr><tr><td><code>|</code></td><td>Pipe : stdout cmd1 → stdin cmd2</td></tr></table></div></div></details></div>
+</div>
+
+<!-- Q29 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">29</div><div class="q-text"><code>grep -l "erreur" * | wc -l</code> — que calcule cette commande ?</div></div>
+  <ul class="q-options">
+    <li>A) Le nombre de lignes contenant "erreur" dans tous les fichiers</li>
+    <li>B) Le nombre de fichiers du répertoire courant contenant le mot "erreur"</li>
+    <li>C) Le nombre d'occurrences du mot "erreur"</li>
+    <li>D) La liste des fichiers sans erreur</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>grep -l "erreur" *</code> → liste les <strong>noms des fichiers</strong> contenant "erreur" (option <code>-l</code> = list files only)<br>• <code>| wc -l</code> → compte le nombre de lignes → nombre de fichiers<br><br>C'est une question type examen quasi certaine (pipeline grep + wc).</div></div></details></div>
+</div>
+
+<!-- Q30 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">30</div><div class="q-text">La ligne <code>#!/bin/bash</code> en tête d'un script s'appelle :</div></div>
+  <ul class="q-options">
+    <li>A) Un commentaire standard</li>
+    <li>B) Le shebang – indique l'interpréteur au noyau</li>
+    <li>C) Une déclaration de variable globale</li>
+    <li>D) Une directive de compilation</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — Le shebang</div><div class="answer-expl">Le <strong>shebang</strong> (<code>#!</code> + chemin de l'interpréteur) est la toute première ligne d'un script exécutable. Il indique au noyau quel programme utiliser pour interpréter le fichier.<br><br>Sans shebang, l'exécution dépend du shell courant. On peut aussi lancer avec <code>bash script.sh</code> sans chmod +x.</div></div></details></div>
+</div>
+
+<!-- Q31 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">31</div><div class="q-text">Sans <code>export</code>, une variable shell est-elle accessible dans un script fils ?</div></div>
+  <ul class="q-options">
+    <li>A) Oui, toutes les variables sont héritées automatiquement</li>
+    <li>B) Non, sans export la variable n'est accessible que dans le shell courant</li>
+    <li>C) Oui, uniquement pour les variables numériques</li>
+    <li>D) Oui, si le script est exécuté avec source</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• Sans <code>export</code> : variable <strong>locale au shell courant</strong> → invisible dans les sous-processus<br>• Avec <code>export VAR=valeur</code> : variable placée dans l'<strong>environnement</strong> → héritée par tous les processus fils<br><br>Exception : <code>. script.sh</code> (source) exécute le script dans le shell courant → les variables sont partagées.</div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH5 – ALLOCATION MÉMOIRE                                     -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch5">
+  <div class="ch-title"><span class="ch-num">CH 05</span> 🧠 Allocation mémoire – Pile &amp; Tas</div>
+  <p class="ch-desc">Stack vs heap, malloc/free, fragmentation, pointeurs invalides</p>
+</div>
+
+<!-- Q32 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">32</div><div class="q-text">Quelle est l'erreur grave dans ce code ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <div class="q-code">int* f() {
+    int n = 42;
+    return &n;
+}</div>
+  <ul class="q-options">
+    <li>A) On ne peut pas retourner un pointeur en C</li>
+    <li>B) La variable n est sur la pile et libérée à la fin de f() → pointeur invalide (dangling pointer)</li>
+    <li>C) Il faut utiliser malloc() avant de retourner</li>
+    <li>D) Il manque un free()</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">La variable <code>n</code> est une variable <strong>locale</strong> stockée sur la <strong>pile</strong>. À la fin de la fonction <code>f()</code>, son espace mémoire est libéré automatiquement.<br><br>Le pointeur retourné pointe vers une zone mémoire invalide → comportement indéfini (<em>dangling pointer</em>).<br><br>✅ Solution : allouer <code>n</code> sur le <strong>tas</strong> avec <code>malloc()</code> :<br><code>int *n = malloc(sizeof(int)); *n = 42; return n;</code></div></div></details></div>
+</div>
+
+<!-- Q33 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">33</div><div class="q-text">La fragmentation externe signifie :</div></div>
+  <ul class="q-options">
+    <li>A) L'espace alloué est plus grand que l'espace demandé</li>
+    <li>B) La mémoire libre est dispersée en petits blocs non contigus</li>
+    <li>C) La pile est pleine</li>
+    <li>D) malloc() retourne NULL</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <strong>Fragmentation externe :</strong> mémoire totale libre suffisante MAIS répartie en petits blocs éparpillés → impossible d'allouer un gros bloc contigu.<br>• <strong>Fragmentation interne :</strong> bloc alloué plus grand que demandé → gaspillage.<br><br>Exemple : 120 Mo libres mais on ne peut pas allouer 100 Mo car les 120 Mo sont en 3 blocs de 40 Mo non adjacents.</div></div></details></div>
+</div>
+
+<!-- Q34 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">34</div><div class="q-text">Donnez la syntaxe pour allouer un tableau de 10 entiers et le libérer : <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) <code>int tab[10]; free(tab);</code></li>
+    <li>B) <code>int *tab = malloc(10); free(tab);</code></li>
+    <li>C) <code>int *tab = malloc(10 * sizeof(int)); free(tab);</code></li>
+    <li>D) <code>int *tab = new int[10]; delete[] tab;</code></li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C</div><div class="answer-expl">• <code>malloc(10)</code> ❌ : alloue 10 <em>octets</em>, pas 10 entiers<br>• <code>malloc(10 * sizeof(int))</code> ✅ : alloue 10 × taille d'un int (généralement 40 octets)<br>• Toujours vérifier : <code>if (tab == NULL) { perror("malloc"); exit(1); }</code><br>• <code>delete[]</code> → syntaxe C++, pas C<br><br>Règle d'or : <code>malloc</code> = utiliser <code>sizeof()</code> !</div></div></details></div>
+</div>
+
+<!-- Q35 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">35</div><div class="q-text">Tableau comparatif Pile vs Tas — quel point est INCORRECT ? <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <ul class="q-options">
+    <li>A) La pile est gérée automatiquement par le compilateur</li>
+    <li>B) Le tas ne peut pas engendrer de fuite mémoire</li>
+    <li>C) La pile fonctionne en LIFO</li>
+    <li>D) La fragmentation est possible sur le tas, pas sur la pile</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — C'est FAUX</div><div class="answer-expl">B est <strong>faux</strong> : le tas <em>peut</em> engendrer des fuites mémoire (si on oublie <code>free()</code>).<br><br>Les 3 autres affirmations sont vraies :<br>• A ✅ : pile → gestion automatique (compilateur via BP/SP)<br>• C ✅ : pile → LIFO (Last In First Out)<br>• D ✅ : tas → fragmentation possible ; pile → aucune (allocations contiguës)</div></div></div></details></div>
+</div>
+
+<!-- Q36 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">36</div><div class="q-text">La stratégie <strong>Best Fit</strong> d'allocation mémoire :</div></div>
+  <ul class="q-options">
+    <li>A) Prend le premier bloc assez grand (rapide)</li>
+    <li>B) Prend le plus petit bloc capable de contenir la donnée</li>
+    <li>C) Prend le plus grand bloc disponible</li>
+    <li>D) Alloue toujours la même taille fixe</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><table><tr><th>Stratégie</th><th>Principe</th><th>Avantage</th><th>Inconvénient</th></tr><tr><td>First Fit</td><td>1er bloc assez grand</td><td>Rapide</td><td>Fragmentation</td></tr><tr><td>Best Fit</td><td>Plus petit bloc suffisant</td><td>Réduit fragmentation</td><td>Plus lent (parcours total)</td></tr><tr><td>Worst Fit</td><td>Plus grand bloc</td><td>Restes plus utiles</td><td>Inefficace</td></tr></table></div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH6 – THREADS & SYNCHRONISATION                              -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch6">
+  <div class="ch-title"><span class="ch-num">CH 06</span> 🧵 Threads &amp; Synchronisation</div>
+  <p class="ch-desc">pthread_create, join, mutex, race condition, section critique, moniteur</p>
+</div>
+
+<!-- Q37 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">37</div><div class="q-text">Threads vs Processus — lequel est correct ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Les threads ont un espace mémoire isolé comme les processus</li>
+    <li>B) Les threads partagent le tas et les données globales, mais chacun a sa propre pile</li>
+    <li>C) La communication entre processus est plus rapide qu'entre threads</li>
+    <li>D) Créer un thread coûte plus de ressources que créer un processus</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><table><tr><th>Critère</th><th>Processus (fork)</th><th>Thread (pthread_create)</th></tr><tr><td>Mémoire</td><td>Isolée (copie)</td><td><span class="right">Partagée (tas, globals, code)</span></td></tr><tr><td>Pile</td><td>Propre à chaque processus</td><td>Propre à chaque thread</td></tr><tr><td>Coût création</td><td>Élevé</td><td>Faible</td></tr><tr><td>Communication</td><td>Complexe (IPC)</td><td>Simple (variables globales)</td></tr><tr><td>Sécurité</td><td>Haute (isolation)</td><td>Faible (crash = tout le processus)</td></tr></table></div></div></details></div>
+</div>
+
+<!-- Q38 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">38</div><div class="q-text">Pourquoi <code>globale++</code> sans mutex peut produire un résultat incorrect avec 2 threads ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) C'est une opération interdite sur les variables globales</li>
+    <li>B) Elle est compilée en 3 instructions (LOAD/ADD/STORE) — l'ordonnanceur peut interrompre entre elles</li>
+    <li>C) Les variables globales ne peuvent pas être modifiées par plusieurs threads</li>
+    <li>D) C'est trop lent pour les threads</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><code>globale++</code> n'est <strong>pas atomique</strong> — elle se décompose en :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">LOAD  R1 ← [globale]   // 1. Lire
+ADD   R1 = R1 + 1       // 2. Incrémenter
+STORE [globale] ← R1    // 3. Écrire</pre>Si l'ordonnanceur interrompt le Thread A entre LOAD et STORE, le Thread B lit l'ancienne valeur, fait son +1, puis A écrase avec son +1 → <strong>perte d'une incrémentation</strong>.<br><br>Solution : encadrer de <code>pthread_mutex_lock</code> / <code>pthread_mutex_unlock</code>.</div></div></details></div>
+</div>
+
+<!-- Q39 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">39</div><div class="q-text">Deux threads incrémentent chacun 10 000 fois une variable globale = 0. La valeur finale sera-t-elle toujours 20 000 sans mutex ?</div></div>
+  <ul class="q-options">
+    <li>A) Oui, les CPUs modernes garantissent l'atomicité de++</li>
+    <li>B) Non, la valeur finale sera souvent inférieure à 20 000 (race condition)</li>
+    <li>C) Oui, le compilateur optimise cette opération</li>
+    <li>D) Non, la valeur sera exactement 10 000</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Sans mutex, des incrémentations sont perdues à cause de la race condition. La valeur finale est <strong>non déterministe</strong> et généralement inférieure à 20 000 (souvent autour de 19 000+).<br><br>Avec le mutex :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">pthread_mutex_lock(&mutex);
+globale++;         // Section critique protégée
+pthread_mutex_unlock(&mutex);</pre>→ Résultat garanti : <strong>20 000</strong>.</div></div></details></div>
+</div>
+
+<!-- Q40 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">40</div><div class="q-text">Différence entre <code>pthread_join</code> et <code>pthread_mutex_lock</code> : <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Ils font la même chose</li>
+    <li>B) join = attendre la fin d'un thread ; mutex_lock = protéger une section critique (exclusion mutuelle)</li>
+    <li>C) join s'utilise entre processus ; mutex entre threads</li>
+    <li>D) mutex_lock = attendre la fin ; join = protéger</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><table><tr><th></th><th>pthread_join</th><th>pthread_mutex_lock</th></tr><tr><td>Rôle</td><td>Synchronisation de <strong>terminaison</strong></td><td>Synchronisation d'<strong>accès</strong></td></tr><tr><td>Bloque jusqu'à</td><td>Le thread cible a terminé</td><td>Le mutex est libéré</td></tr><tr><td>Utilisation</td><td>main attend ses threads</td><td>Protéger une ressource partagée</td></tr></table><br>La jointure empêche le main de terminer prématurément. Le mutex empêche deux threads de modifier une même variable simultanément.</div></div></details></div>
+</div>
+
+<!-- Q41 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">41</div><div class="q-text">Si <code>main()</code> se termine sans appeler <code>pthread_join()</code> :</div></div>
+  <ul class="q-options">
+    <li>A) Les threads continuent en arrière-plan</li>
+    <li>B) Les threads sont tués immédiatement avec le processus</li>
+    <li>C) Les threads deviennent des zombies</li>
+    <li>D) Les threads sont adoptés par init</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Les threads vivent dans le même processus. Quand le processus se termine (quand <code>main()</code> retourne), <strong>tous les threads sont tués immédiatement</strong>, qu'ils aient fini leur travail ou non.<br><br>Sans <code>pthread_join()</code>, on risque de ne jamais voir le résultat des threads.</div></div></details></div>
+</div>
+
+<!-- Q42 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">42</div><div class="q-text">Le mutex doit être placé <strong>à l'intérieur</strong> de la boucle, pas à l'extérieur. Pourquoi ? <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <div class="q-code">// Mauvais :
+pthread_mutex_lock(&m);
+for(int k=0; k&lt;10000; k++) globale++;
+pthread_mutex_unlock(&m);
+
+// Correct :
+for(int k=0; k&lt;10000; k++) {
+    pthread_mutex_lock(&m);
+    globale++;
+    pthread_mutex_unlock(&m);
+}</div>
+  <ul class="q-options">
+    <li>A) Il n'y a pas de différence</li>
+    <li>B) Si lock est hors de la boucle, un seul thread travaille à la fois sur toute la boucle → parallélisme détruit</li>
+    <li>C) Le lock hors boucle provoque un deadlock</li>
+    <li>D) Le lock doit toujours être hors de la boucle</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Si le <code>lock</code> est hors de la boucle, un thread monopolise le mutex pour 10 000 itérations → les autres threads attendent toute cette durée → <strong>le parallélisme est annulé</strong>, performances = séquentielles.<br><br>Le lock doit protéger uniquement la <strong>section critique minimale</strong> (ici, une seule incrémentation).</div></div></details></div>
+</div>
+
+<!-- Q43 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">43</div><div class="q-text">Choisir entre <code>fork()</code> et <code>pthread_create()</code> : quand préférer les threads ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Quand on veut une isolation maximale entre les tâches</li>
+    <li>B) Quand les tâches doivent partager des données facilement et que la légèreté est importante</li>
+    <li>C) Quand on veut utiliser des pipes entre les tâches</li>
+    <li>D) Quand chaque tâche doit avoir son propre fichier système</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Règle du cours :<br>• Utiliser <code>pthread_create()</code> si : partage de données simplifié, tâches légères, minimiser le surcoût de création.<br>• Utiliser <code>fork()</code> si : isolation stricte entre tâches, stabilité (un crash n'affecte pas les autres), fonctionnalités spécifiques aux processus.<br><br>Exemple : un calcul parallèle (produit scalaire) → threads. Un serveur web avec isolation → processus.</div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH7 – APPELS SYSTÈME                                         -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch7">
+  <div class="ch-title"><span class="ch-num">CH 07</span> 🔧 Appels Système</div>
+  <p class="ch-desc">open/read/write, dup2, pipe, descripteurs, fork+exec+wait</p>
+</div>
+
+<!-- Q44 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">44</div><div class="q-text">Les descripteurs 0, 1, 2 correspondent respectivement à : <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) stdout, stdin, stderr</li>
+    <li>B) stdin, stdout, stderr</li>
+    <li>C) stderr, stdout, stdin</li>
+    <li>D) stdin, stderr, stdout</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — 0=stdin, 1=stdout, 2=stderr</div><div class="answer-expl">À mémoriser absolument :<br>• <strong>0</strong> = stdin (entrée standard, clavier par défaut)<br>• <strong>1</strong> = stdout (sortie standard, écran par défaut)<br>• <strong>2</strong> = stderr (sortie d'erreur, écran par défaut)<br><br>Ces 3 descripteurs sont ouverts automatiquement pour tout processus. On les retrouve dans <code>/proc/&lt;pid&gt;/fd/</code>.</div></div></details></div>
+</div>
+
+<!-- Q45 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">45</div><div class="q-text">Que fait <code>dup2(fd, 1)</code> ? <span class="q-badge badge-hot">🔥 examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Duplique fd et stocke la copie dans une variable temporaire</li>
+    <li>B) Ferme le descripteur 1 (stdout) et le fait pointer vers le même fichier que fd</li>
+    <li>C) Crée un nouveau descripteur avec le numéro 1</li>
+    <li>D) Échange les descripteurs fd et 1</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><code>dup2(oldfd, newfd)</code> : ferme <code>newfd</code> si déjà ouvert, puis duplique <code>oldfd</code> vers <code>newfd</code>.<br><br>Après <code>dup2(fd, 1)</code>, le descripteur 1 (stdout) pointe vers le même fichier que <code>fd</code>. Tout ce qu'on écrit sur stdout va dans ce fichier.<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">int fd = open("out.txt", O_WRONLY|O_CREAT|O_TRUNC, 0644);
+dup2(fd, 1);   // stdout → out.txt
+close(fd);     // fd inutile (stdout suffit)
+printf("Vers le fichier\n"); // Va dans out.txt !</pre></div></div></details></div>
+</div>
+
+<!-- Q46 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">46</div><div class="q-text"><code>read()</code> retourne 0. Que signifie-t-il ?</div></div>
+  <ul class="q-options">
+    <li>A) Erreur de lecture</li>
+    <li>B) Fin de fichier (EOF) — plus de données à lire</li>
+    <li>C) Lecture réussie, 0 octet demandé</li>
+    <li>D) Fichier vide</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — EOF</div><div class="answer-expl">Valeurs de retour de <code>read()</code> :<br>• <code>n &gt; 0</code> → n octets lus avec succès (peut être &lt; count !)<br>• <code>0</code> → <strong>EOF</strong> (fin de fichier, plus de données)<br>• <code>-1</code> → erreur (vérifier errno)<br><br>Pattern boucle de lecture :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">while ((n = read(fd, buf, SIZE)) > 0) {
+    write(1, buf, n);
+}
+if (n == -1) perror("read");</pre></div></div></details></div>
+</div>
+
+<!-- Q47 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">47</div><div class="q-text">En utilisant <code>pipe()</code>, quelle règle est absolue ? <span class="q-badge badge-warn">⚠️ piège</span></div></div>
+  <ul class="q-options">
+    <li>A) On peut utiliser les deux extrémités dans le même processus</li>
+    <li>B) Il faut toujours fermer les extrémités inutilisées dans chaque processus</li>
+    <li>C) Le pipe doit être créé après fork()</li>
+    <li>D) On ne peut écrire qu'un octet à la fois dans un pipe</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><strong>RÈGLE ABSOLUE :</strong> fermer les extrémités inutilisées !<br><br>Si le fils (lecteur) oublie de fermer <code>p[1]</code> (écriture), son <code>read(p[0])</code> ne recevra <em>jamais</em> EOF car il y a encore une extrémité d'écriture ouverte (la sienne) → blocage infini.<br><pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">// Père écrit
+close(p[0]);  // Ferme lecture (inutile)
+write(p[1], data, len);
+close(p[1]);  // Signale EOF au fils
+
+// Fils lit
+close(p[1]);  // Ferme écriture (inutile !)
+read(p[0], buf, SIZE);
+close(p[0]);</pre></div></div></details></div>
+</div>
+
+<!-- Q48 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">48</div><div class="q-text">Différence entre <code>read()/write()</code> et <code>fread()/fwrite()</code> : <span class="q-badge badge-warn">⚠️ important</span></div></div>
+  <ul class="q-options">
+    <li>A) Aucune différence fonctionnelle</li>
+    <li>B) read/write sont des appels système (lents, sans tampon) ; fread/fwrite sont des fonctions libc (rapides, avec tampon)</li>
+    <li>C) fread/fwrite sont plus anciens et déconseillés</li>
+    <li>D) read/write utilisent FILE* ; fread/fwrite utilisent un descripteur int</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><table><tr><th></th><th>read/write</th><th>fread/fwrite</th></tr><tr><td>Type</td><td>Appel système</td><td>Fonction bibliothèque C</td></tr><tr><td>Manipule</td><td>Descripteur <code>int fd</code></td><td>Pointeur <code>FILE*</code></td></tr><tr><td>Tampon</td><td>Aucun</td><td>Tampon utilisateur</td></tr><tr><td>Vitesse</td><td>Plus lent (syscall à chaque appel)</td><td>Plus rapide</td></tr></table>Conversion : <code>fdopen(fd, "r")</code> → FILE* ; <code>fileno(f)</code> → fd int</div></div></details></div>
+</div>
+
+<!-- Q49 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">49</div><div class="q-text">Que se passe-t-il si on oublie <code>wait()</code> après <code>fork()</code> ?</div></div>
+  <ul class="q-options">
+    <li>A) Le père attend quand même automatiquement</li>
+    <li>B) Le fils devient zombie à sa terminaison</li>
+    <li>C) Le fils continue en tant que processus orphelin</li>
+    <li>D) Rien de particulier</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — Zombie</div><div class="answer-expl">Si le père ne fait pas <code>wait()</code>, quand le fils se termine, il entre en état <strong>zombie (Z)</strong> : libère ses ressources mais garde son entrée dans la table des processus.<br><br>Ce slot zombie est conservé jusqu'à ce que le père lise le code de retour via <code>wait()</code>. Si le père lui-même se termine, init adopte le zombie et le nettoie.</div></div></details></div>
+</div>
+
+<!-- Q50 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">50</div><div class="q-text"><code>open("fich", O_WRONLY|O_CREAT|O_TRUNC, 0644)</code> — que fait ce flag combiné ?</div></div>
+  <ul class="q-options">
+    <li>A) Ouvre en lecture, crée si inexistant, tronque</li>
+    <li>B) Ouvre en écriture, crée si inexistant, efface le contenu existant</li>
+    <li>C) Ouvre en lecture+écriture, ajoute à la fin</li>
+    <li>D) Ouvre en écriture uniquement si le fichier existe déjà</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>O_WRONLY</code> → écriture seule<br>• <code>O_CREAT</code> → créer si n'existe pas (nécessite le 3ème arg : mode <code>0644</code>)<br>• <code>O_TRUNC</code> → tronquer (vider) si le fichier existe déjà<br>• <code>0644</code> → permissions rw-r--r-- si création<br><br>C'est le pattern standard pour écrire dans un fichier (équivalent à <code>&gt;</code> en shell).</div></div></details></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- CH8 – QUESTIONS DU SUPPORT COURS                             -->
+<!-- ============================================================ -->
+<div class="sep"></div>
+<div class="ch-block" id="ch8">
+  <div class="ch-title"><span class="ch-num">CH 08</span> 📋 Questions du Support de cours (Pr. Zellama)</div>
+  <p class="ch-desc">Questions/réponses directement tirées du support officiel du cours</p>
+</div>
+
+<div class="callout callout-blue" style="margin-bottom:1.5rem;">
+  <strong>Source :</strong> Ces questions sont tirées mot pour mot des Q&amp;A du support de cours officiel. Ce sont des questions que la professeure a elle-même rédigées — priorité maximale.
+</div>
+
+<!-- Q51 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">51</div><div class="q-text">Pour lancer en parallèle plusieurs traitements, quel est l'avantage de <code>pthread_create()</code> sur <code>fork()</code> ? <span class="q-badge badge-hot">🔥 support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) pthread_create() isole mieux les processus</li>
+    <li>B) pthread_create() crée des threads légers partageant la mémoire, avec moins de surcoût et communication simplifiée</li>
+    <li>C) fork() est plus rapide pour les petites tâches</li>
+    <li>D) fork() partage automatiquement la mémoire</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><strong>pthread_create() avantages :</strong><br>• Crée un thread au sein du <em>même processus</em> → partage mémoire<br>• Surcoût faible (pas de duplication de l'espace mémoire)<br>• Communication directe via variables globales (pas d'IPC)<br><br><strong>fork() avantages :</strong><br>• Isolation stricte : un crash n'affecte pas les autres<br>• Sécurité et stabilité supérieures<br><br>Pour des tâches légères avec partage de données → <strong>threads</strong>. Pour de l'isolation → <strong>processus</strong>.</div></div></details></div>
+</div>
+
+<!-- Q52 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">52</div><div class="q-text">Citez quatre événements qui peuvent interrompre l'exécution d'un processus sous UNIX. <span class="q-badge badge-hot">🔥 support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Manque de RAM, bug, virus, mauvais code</li>
+    <li>B) Signal, interruption matérielle, attente I/O, fin du quantum (ordonnancement)</li>
+    <li>C) Trop de threads, pile pleine, mémoire fragmentée, fork() échoué</li>
+    <li>D) Appel système, compilation, linkage, démarrage</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Les 4 causes d'interruption d'un processus selon le support de cours :<br><br>1. <strong>Signal (interruption logicielle) :</strong> ex. Ctrl+C → SIGINT, ou <code>kill PID</code> → SIGTERM<br><br>2. <strong>Interruption matérielle :</strong> événement d'un périphérique (clavier, réseau, souris) → le noyau gère l'événement<br><br>3. <strong>Attente de ressources (I/O) :</strong> lecture disque, attente réseau → processus suspendu jusqu'à la fin de l'opération<br><br>4. <strong>Changement de contexte (Scheduling) :</strong> quantum de temps expiré, ou processus de priorité plus élevée disponible → ordonnanceur préempte le processus</div></div></details></div>
+</div>
+
+<!-- Q53 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">53</div><div class="q-text">Quel est le rôle principal de l'ordonnanceur (scheduler) ? <span class="q-badge badge-hot">🔥 support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Gérer les fichiers sur disque</li>
+    <li>B) Déterminer quel processus s'exécute à quel moment et gérer les changements de contexte</li>
+    <li>C) Allouer la mémoire RAM</li>
+    <li>D) Compiler les programmes</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">L'ordonnanceur vise à :<br>• <strong>Maximiser l'utilisation du CPU</strong> (CPU le plus occupé possible)<br>• <strong>Minimiser le temps d'attente</strong> des processus<br>• <strong>Assurer une réponse rapide</strong> (surtout pour les processus interactifs)<br>• <strong>Maintenir l'équité</strong> (tous les processus ont une chance d'accéder au CPU)<br><br>L'ordonnanceur UNIX fonctionne par <strong>priorité + temps partagé</strong> (quanta). Il favorise les processus interactifs en leur accordant une priorité plus élevée.</div></div></details></div>
+</div>
+
+<!-- Q54 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">54</div><div class="q-text">L'ordonnanceur UNIX favorise-t-il les processus interactifs ? <span class="q-badge badge-warn">⚠️ support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Non, tous les processus ont exactement la même priorité</li>
+    <li>B) Oui, ils reçoivent une priorité plus élevée pour garantir la réactivité utilisateur</li>
+    <li>C) Non, les processus batch sont toujours prioritaires</li>
+    <li>D) Cela dépend uniquement du programmeur</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">L'ordonnanceur UNIX favorise les processus interactifs par :<br>• <strong>Priorité élevée</strong> accordée aux applications interagissant avec l'utilisateur<br>• <strong>Réactivité</strong> : réponse rapide aux entrées clavier/souris<br>• <strong>Gestion des interruptions</strong> : les processus interactifs répondent vite aux commandes<br><br>L'objectif est une expérience utilisateur fluide dans les applications nécessitant des interactions fréquentes.</div></div></details></div>
+</div>
+
+<!-- Q55 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">55</div><div class="q-text">Pourquoi le partage de données pose-t-il des problèmes en temps partagé ? <span class="q-badge badge-hot">🔥 support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Parce que la mémoire est trop petite</li>
+    <li>B) À cause des conditions de course, incohérences de données et difficultés de synchronisation</li>
+    <li>C) Parce que les processus ont des vitesses différentes</li>
+    <li>D) Parce qu'il n'existe pas de mécanisme de partage sous UNIX</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Trois problèmes du partage en temps partagé (support cours) :<br><br>1. <strong>Conditions de course :</strong> plusieurs processus accèdent/modifient les mêmes données → résultat imprévisible<br><br>2. <strong>Incohérence des données :</strong> mises à jour concurrentes → états intermédiaires invalides<br><br>3. <strong>Difficultés de synchronisation :</strong> nécessite sémaphores, mutex ou autres primitives → complexité accrue<br><br>UNIX contrôle ces accès via <strong>sémaphores</strong>, <strong>mutex</strong> et <strong>moniteurs</strong>.</div></div></details></div>
+</div>
+
+<!-- Q56 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">56</div><div class="q-text">Qu'est-ce qu'une section critique ? (définition du support de cours) <span class="q-badge badge-hot">🔥 support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Une fonction récursive</li>
+    <li>B) Une partie du code où un processus accède à des ressources partagées ne devant pas être utilisées simultanément</li>
+    <li>C) Le code du noyau protégé de l'utilisateur</li>
+    <li>D) Une variable déclarée globale</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl"><strong>Définition exacte du support de cours :</strong><br>Une section critique est une partie de code où un processus accède à des ressources partagées (comme des données ou des fichiers) qui ne doivent pas être utilisées simultanément par plusieurs processus.<br><br>Elle doit être protégée par des mécanismes de synchronisation (mutex, sémaphore) pour garantir l'<strong>exclusion mutuelle</strong> : une seule entité à la fois peut entrer dans la section critique.</div></div></details></div>
+</div>
+
+<!-- Q57 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">57</div><div class="q-text">Qu'est-ce qu'un système multiprogrammé en temps partagé ? <span class="q-badge badge-warn">⚠️ support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Un système avec un seul utilisateur et un seul programme</li>
+    <li>B) Plusieurs programmes en mémoire simultanément, avec CPU découpé en quanta — chaque processus suspendu quand son quantum est écoulé</li>
+    <li>C) Un système qui traite les programmes séquentiellement en batch</li>
+    <li>D) Un système avec plusieurs CPU physiques</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <strong>Multiprogrammé :</strong> plusieurs programmes chargés en mémoire simultanément<br>• <strong>Temps partagé :</strong> limite le temps d'allocation du processeur à chaque processus — un processus qui consomme son quantum est suspendu même s'il n'a pas fini<br>• <strong>Traitement par lots :</strong> enchaînement automatique et périodique sans intervention opérateur</div></div></details></div>
+</div>
+
+<!-- Q58 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">58</div><div class="q-text">Comment sont organisés les fichiers dans UNIX ? Un utilisateur peut-il accéder aux fichiers d'un autre ? <span class="q-badge badge-warn">⚠️ support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) En liste plate ; non, jamais</li>
+    <li>B) En arborescence hiérarchique ; oui, si les permissions le permettent (r/w/x pour "autres")</li>
+    <li>C) En base de données ; oui, toujours</li>
+    <li>D) En arbre ; non, même root ne peut pas</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• Les fichiers UNIX sont organisés en <strong>arborescence hiérarchique</strong> (répertoires et sous-répertoires)<br>• Un utilisateur peut accéder aux fichiers d'un autre <strong>si les permissions "autres" (others) le permettent</strong> : droit r (lecture), w (écriture) ou x (exécution)<br>• Root peut accéder à tout sans restriction de permissions</div></div></details></div>
+</div>
+
+<!-- Q59 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">59</div><div class="q-text">Tout processus UNIX a-t-il forcément un père ? Qu'est-ce que PID 1 ? <span class="q-badge badge-warn">⚠️ support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Non, le premier processus n'a pas de père</li>
+    <li>B) Oui, sauf init (PID 1) qui est le premier processus lancé par le noyau</li>
+    <li>C) Non, les processus daemon n'ont pas de père</li>
+    <li>D) Oui, même init a le noyau comme père</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• Tout processus a un père (PPID), <strong>sauf init (PID 1)</strong><br>• <strong>init</strong> est le premier processus lancé par le noyau au démarrage<br>• Les processus orphelins (père mort avant eux) sont <em>adoptés par init</em><br>• Quand un processus zombie perd son père, init le "récolte" via wait()</div></div></details></div>
+</div>
+
+<!-- Q60 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">60</div><div class="q-text">Les 3 mécanismes de synchronisation pour contrôler les accès aux données partagées sous UNIX : <span class="q-badge badge-warn">⚠️ support cours</span></div></div>
+  <ul class="q-options">
+    <li>A) Pipe, fork, exec</li>
+    <li>B) Sémaphores, Mutex (Exclusion mutuelle), Moniteurs</li>
+    <li>C) Signal, kill, wait</li>
+    <li>D) open, read, write</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Mécanismes de synchronisation (support de cours) :<br><br>• <strong>Sémaphores :</strong> compteurs régulant le nombre de processus accédant simultanément à une ressource<br>• <strong>Mutex (Mutual Exclusion) :</strong> verrou binaire garantissant qu'un seul processus/thread à la fois accède à la ressource. Ex : <code>pthread_mutex_lock</code><br>• <strong>Moniteurs :</strong> ensemble de primitives de synchronisation avec variables de condition. Ex : <code>pthread_cond_wait</code>, <code>pthread_cond_signal</code></div></div></details></div>
+</div>
+
+<!-- ======= SECTION BONUS – INTERPRÉTATION DE CODE ======= -->
+<div class="sep"></div>
+<div class="ch-block">
+  <div class="ch-title">🔬 Interprétation de code – Questions avancées (Q61–Q80)</div>
+  <p class="ch-desc">Questions "qu'affiche ce programme" — très fréquentes à l'examen de Pr. Zellama</p>
+</div>
+
+<!-- Q61 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">61</div><div class="q-text">Qu'affiche ce programme ? <span class="q-badge badge-hot">🔥 annales 2024-2025</span></div></div>
+  <div class="q-code">int x = 0;
+if (fork() == 0) {
+    x = 2;
+    printf("Dans fils: x = %d\n", x);
+} else {
+    wait(NULL);
+    printf("Dans père: x = %d\n", x);
+}</div>
+  <ul class="q-options">
+    <li>A) Dans fils: x = 2 / Dans père: x = 2</li>
+    <li>B) Dans fils: x = 2 / Dans père: x = 0</li>
+    <li>C) Dans père: x = 0 / Dans fils: x = 2</li>
+    <li>D) Dans père: x = 2 / Dans fils: x = 0</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B (dans cet ordre-là, mais C est aussi correct si le père s'affiche en premier)</div><div class="answer-expl">• Le fils modifie <code>x = 2</code> dans <strong>sa propre copie</strong> de l'espace mémoire (COW - Copy on Write)<br>• Le père conserve <code>x = 0</code> dans <strong>son propre espace</strong><br>• Le père attend le fils via <code>wait(NULL)</code><br><br>Résultat garanti : <code>Dans fils: x = 2</code> puis <code>Dans père: x = 0</code><br><br>C'est exactement la question de l'annale 2024-2025 !</div></div></details></div>
+</div>
+
+<!-- Q62 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">62</div><div class="q-text">Programme 3 de l'annale 2024-2025 — combien de "hello !" ? <span class="q-badge badge-hot">🔥 annales</span></div></div>
+  <div class="q-code">int main() {
+    if (fork())  // vrai dans le père seulement
+        fork();
+    printf("hello!\n");
+    exit(0);
+}</div>
+  <ul class="q-options">
+    <li>A) 2</li>
+    <li>B) 3</li>
+    <li>C) 4</li>
+    <li>D) 1</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — 3 "hello !"</div><div class="answer-expl">• 1er <code>fork()</code> → crée P1. Retourne PID fils (≠0, vrai) dans P0 ; 0 (faux) dans P1<br>• P0 exécute le 2ème <code>fork()</code> → crée P2<br>• P1 ne fait PAS le 2ème fork (if était faux)<br>• 3 processus : P0, P1, P2 → chacun affiche "hello !" → <strong>3 fois</strong><br><br>Correction de l'annale 2024-2025 : "fork() renvoie non-nul (vrai) dans le père seulement. Le père se clone donc à nouveau, tandis que les fils non."</div></div></details></div>
+</div>
+
+<!-- Q63 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">63</div><div class="q-text">Ce code avec threads est-il correct ? Qu'est-ce qui ne va pas ?</div></div>
+  <div class="q-code">int somme = 0;
+void* f(void* arg) {
+    for (int i = 0; i &lt; 1000; i++)
+        somme += 1;  // Sans mutex !
+    return NULL;
+}
+// 3 threads lancés</div>
+  <ul class="q-options">
+    <li>A) Correct, somme vaudra toujours 3000</li>
+    <li>B) Incorrect, somme vaudra souvent moins que 3000 (race condition sur somme)</li>
+    <li>C) Correct mais lent</li>
+    <li>D) Compile mais ne s'exécute pas</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">C'est exactement le problème des annales 2023-2024 :<br>"Non, le résultat ne sera pas cohérent car les threads accèdent simultanément à la variable globale somme. Il faut utiliser les mutex pour résoudre le problème."<br><br>Correction :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">pthread_mutex_lock(&mutex);
+somme += 1;
+pthread_mutex_unlock(&mutex);</pre></div></div></details></div>
+</div>
+
+<!-- Q64 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">64</div><div class="q-text">Qu'affiche ce programme (TP3 cours) ?</div></div>
+  <div class="q-code">printf("Dauphine");
+write(1, "MIDO", 4);
+printf("paris\n");</div>
+  <ul class="q-options">
+    <li>A) Dauphine MIDO paris</li>
+    <li>B) MIDODauphineparis</li>
+    <li>C) Dauphine paris MIDO</li>
+    <li>D) Erreur de compilation</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — MIDODauphineparis</div><div class="answer-expl"><code>printf()</code> utilise un <strong>tampon</strong> (buffer) : "Dauphine" est stocké en mémoire mais pas encore envoyé à l'écran.<br><br><code>write(1, "MIDO", 4)</code> est un appel système <strong>direct, sans tampon</strong> → "MIDO" s'affiche immédiatement.<br><br>Ensuite le <code>\n</code> de <code>printf("paris\n")</code> vide le tampon → "Dauphine" et "paris" apparaissent.<br><br>Résultat : MIDO (direct) puis Dauphine (vidage du buffer) puis paris.<br><br>Si on avait <code>printf("Dauphine\n")</code>, le \n viderait le buffer immédiatement → Dauphine / MIDO / paris</div></div></details></div>
+</div>
+
+<!-- Q65 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">65</div><div class="q-text">Script shell annales 2023-2024 — que fait ce script ?</div></div>
+  <div class="q-code">#!/bin/bash
+i=0
+while
+echo "Entrer un texte ou &lt;FIN&gt; pour quitter:\c"
+read ligne
+do
+  if [ "$ligne" = "fin" -o "$ligne" = "FIN" ]
+  then
+    break
+  fi
+  echo "$ligne" >> fichligne.txt
+  let i=i+1
+done
+echo "le nombre de lignes saisies: $i"</div>
+  <ul class="q-options">
+    <li>A) Lit un fichier et compte ses lignes</li>
+    <li>B) Lit des lignes au clavier, les enregistre dans fichligne.txt jusqu'à "FIN", affiche le nombre de lignes saisies</li>
+    <li>C) Trie les lignes alphabétiquement</li>
+    <li>D) Supprime fichligne.txt après lecture</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Le script :<br>1. Entre dans une boucle <code>while ... do</code><br>2. Affiche une invite et <strong>lit une ligne</strong> au clavier (<code>read ligne</code>)<br>3. Si la ligne = "fin" ou "FIN" → <code>break</code> (sort de la boucle)<br>4. Sinon : <strong>ajoute</strong> la ligne dans fichligne.txt (<code>&gt;&gt;</code>) et incrémente le compteur<br>5. À la fin : affiche le nombre de lignes saisies<br><br>Note : <code>-o</code> = OU logique dans les tests shell ; <code>&gt;&gt;</code> = ajout sans effacer.</div></div></details></div>
+</div>
+
+<!-- Q66 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">66</div><div class="q-text">Qu'est-ce qu'un système de fichiers selon le QCM annales 2023-2024 ?</div></div>
+  <ul class="q-options">
+    <li>A) Il permet de stocker les informations sur la mémoire cache</li>
+    <li>B) Il permet de stocker les informations sur la mémoire vive</li>
+    <li>C) Il permet de stocker les informations et de les organiser sur les mémoires secondaires (disques)</li>
+    <li>D) Il gère uniquement les fichiers texte</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — Mémoires secondaires (disques)</div><div class="answer-expl">Le système de fichiers permet de <strong>stocker et organiser les informations sur les mémoires secondaires</strong> (disques durs, SSD, clés USB…), par opposition à la mémoire vive (RAM) qui est volatile.<br><br>Question tirée du QCM Q6 de l'examen principal 2023-2024 de Pr. Zellama.</div></div></details></div>
+</div>
+
+<!-- Q67 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">67</div><div class="q-text">Si un fichier a les permissions <code>-rw-r--r--</code>, son propriétaire a les droits :</div></div>
+  <ul class="q-options">
+    <li>A) De lecture uniquement</li>
+    <li>B) D'exécution uniquement</li>
+    <li>C) De lecture et d'écriture</li>
+    <li>D) De lecture et d'exécution</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — Lecture et écriture</div><div class="answer-expl"><code>-rw-r--r--</code> décodé :<br>• <code>-</code> → type : fichier ordinaire<br>• <code>rw-</code> → propriétaire : <strong>r</strong>ead + <strong>w</strong>rite (lecture + écriture, pas d'exécution)<br>• <code>r--</code> → groupe : lecture seule<br>• <code>r--</code> → autres : lecture seule<br><br>Valeur numérique : <code>chmod 644</code>. C'est le mode standard pour un fichier texte.</div></div></details></div>
+</div>
+
+<!-- Q68 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">68</div><div class="q-text">Si les permissions <code>-rw-x--xr--</code> sont accordées, les utilisateurs n'appartenant pas au groupe ont :</div></div>
+  <ul class="q-options">
+    <li>A) Exécution uniquement</li>
+    <li>B) Lecture, écriture et exécution</li>
+    <li>C) Lecture et exécution</li>
+    <li>D) Lecture uniquement</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : D — Lecture uniquement</div><div class="answer-expl">Décodage de <code>-rw-x--xr--</code> :<br>• <code>rw-</code> → propriétaire : lecture + écriture<br>• <code>x--</code> → groupe : exécution seulement<br>• <code>r--</code> → <strong>autres (non-groupe) : lecture seulement</strong><br><br>Question Q8 de l'examen principal 2023-2024.</div></div></details></div>
+</div>
+
+<!-- Q69 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">69</div><div class="q-text">Que fait : <code>grep ^[a-d] carnet-adresse</code> ?</div></div>
+  <ul class="q-options">
+    <li>A) Affiche les lignes contenant les lettres a, b, c ou d n'importe où</li>
+    <li>B) Affiche les lignes commençant par a, b, c ou d</li>
+    <li>C) Supprime les lignes commençant par a, b, c, d</li>
+    <li>D) Compte les lignes de a à d</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>^</code> → ancre de début de ligne<br>• <code>[a-d]</code> → n'importe quel caractère parmi a, b, c, d<br>• Ensemble : lignes <strong>commençant par</strong> a, b, c ou d<br><br>Question Q10 de l'examen principal 2023-2024. Exemple de résultats avec le fichier carnet-adresse : les lignes de "abel", "charles", "dupont" etc. seraient sélectionnées.</div></div></details></div>
+</div>
+
+<!-- Q70 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">70</div><div class="q-text">Un système monotâche :</div></div>
+  <ul class="q-options">
+    <li>A) N'utilise pas de système d'exploitation</li>
+    <li>B) A pour seule tâche le système d'exploitation</li>
+    <li>C) Contient en mémoire la tâche en cours d'exécution seulement</li>
+    <li>D) Ne peut pas exécuter de programmes utilisateur</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C</div><div class="answer-expl">Un système <strong>monotâche</strong> n'a qu'un seul programme chargé et actif en mémoire à la fois. Il traite les tâches séquentiellement.<br><br>Opposé : système <strong>multitâche</strong> = plusieurs tâches en mémoire simultanément, chacune s'exécutant à tour de rôle (quanta).<br><br>Question Q4 de l'examen principal 2023-2024.</div></div></details></div>
+</div>
+
+<!-- Q71 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">71</div><div class="q-text">La procédure de démarrage d'un système Linux sur un PC (dans l'ordre correct) :</div></div>
+  <ul class="q-options">
+    <li>A) Noyau → BIOS → init → processus</li>
+    <li>B) BIOS charge le programme de démarrage → lit et démarre le noyau → noyau lance init → init initialise les autres processus</li>
+    <li>C) init → BIOS → noyau → processus</li>
+    <li>D) shell → noyau → BIOS → init</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Séquence de boot Linux :<br>1. <strong>BIOS</strong> (ou UEFI) charge le programme de démarrage (bootloader = GRUB)<br>2. Le bootloader lit et démarre le <strong>noyau Linux</strong><br>3. Le noyau lance le processus <strong>init</strong> (PID 1)<br>4. <strong>init</strong> initialise les autres processus du système<br><br>Question Q3 de l'examen principal 2023-2024.</div></div></details></div>
+</div>
+
+<!-- Q72 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">72</div><div class="q-text">Qu'est-ce qu'un appel système (définition type examen) ? <span class="q-badge badge-hot">🔥 annales 2023-2024</span></div></div>
+  <ul class="q-options">
+    <li>A) Une fonction standard de la bibliothèque C</li>
+    <li>B) Des fonctions primitives fournies par l'OS, seule porte entre un programme et le monde extérieur</li>
+    <li>C) Un appel à une autre fonction du même programme</li>
+    <li>D) Une commande shell</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Définition de l'annale 2023-2024 :<br>"Ce sont des fonctions primitives fournies par le système d'exploitation et appelées par un programme utilisateur. Le noyau utilise ces fonctions qui sont pour lui la <strong>seule porte entre un programme et le monde extérieur</strong>."<br><br>Catégories d'appels système UNIX :<br>• Système de fichiers : <code>open, close, read, write, create</code><br>• Contrôle des processus : <code>exec, fork, wait, signal, kill</code><br>• Communication inter-processus : <code>pipe</code></div></div></details></div>
+</div>
+
+<!-- Q73 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">73</div><div class="q-text">Chemin relatif depuis tp2 vers Makefile dans tp1 (dans prog2) :</div></div>
+  <div class="q-code">// Arborescence :
+// prog2/
+//   tp1/Makefile
+//   tp2/   ← répertoire courant</div>
+  <ul class="q-options">
+    <li>A) /prog2/tp1/Makefile</li>
+    <li>B) ./tp1/Makefile</li>
+    <li>C) ../tp1/Makefile</li>
+    <li>D) ../../tp1/Makefile</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : C — ../tp1/Makefile</div><div class="answer-expl">Depuis tp2 :<br>• <code>..</code> → remonte dans prog2<br>• <code>tp1/Makefile</code> → descend dans tp1 et accède au fichier<br><br>Chemin relatif : <strong>../tp1/Makefile</strong><br>Chemin absolu : <strong>~/prog2/tp1/Makefile</strong><br><br>Question b de l'exercice 2, annale 2024-2025.</div></div></details></div>
+</div>
+
+<!-- Q74 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">74</div><div class="q-text">Pour créer un répertoire tp2 dans prog2 et s'y déplacer, puis créer 3 fichiers vides en une commande :</div></div>
+  <ul class="q-options">
+    <li>A) mkdir tp2; cd tp2; touch main.c scooter.c scooter.h</li>
+    <li>B) mkdir prog2/tp2; cd prog2/tp2; touch main.c scooter.c scooter.h</li>
+    <li>C) mkdir tp2; touch *.c *.h</li>
+    <li>D) cd prog2; mkdir tp2; touch main.c; touch scooter.c; touch scooter.h</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Solution de l'annale 2024-2025 :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">mkdir prog2/tp2
+cd prog2/tp2
+touch main.c scooter.c scooter.h</pre>Note : <code>touch</code> crée des fichiers vides. Plusieurs fichiers peuvent être créés en une seule commande en listant les noms séparés par des espaces.</div></div></details></div>
+</div>
+
+<!-- Q75 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">75</div><div class="q-text">Comment compter les lignes d'un fichier avion.h ?</div></div>
+  <ul class="q-options">
+    <li>A) cat avion.h | count</li>
+    <li>B) wc -l avion.h</li>
+    <li>C) grep -c "" avion.h</li>
+    <li>D) ls -l avion.h | awk '{print $5}'</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B — wc -l avion.h</div><div class="answer-expl"><code>wc</code> (word count) avec l'option <code>-l</code> compte les <strong>lignes</strong>.<br><br>Options wc :<br>• <code>-l</code> → lignes<br>• <code>-w</code> → mots<br>• <code>-c</code> → octets<br><br>Solution directe de l'annale 2024-2025 question g.</div></div></details></div>
+</div>
+
+<!-- Q76 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">76</div><div class="q-text">La commande <code>cp -R tp1 tp_avion</code> :</div></div>
+  <ul class="q-options">
+    <li>A) Déplace tp1 vers tp_avion</li>
+    <li>B) Copie récursivement tp1 vers tp_avion (avec tout son contenu)</li>
+    <li>C) Crée un lien symbolique</li>
+    <li>D) Supprime tp1 après la copie</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>cp -R</code> (ou <code>cp -r</code>) → copie <strong>récursive</strong> d'un répertoire et tout son contenu<br>• Sans <code>-R</code>, <code>cp</code> ne peut pas copier un répertoire<br>• L'original tp1 reste intact (contrairement à <code>mv</code>)<br><br>Pour déplacer : <code>mv tp1 tp_avion</code></div></div></details></div>
+</div>
+
+<!-- Q77 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">77</div><div class="q-text">Dans le script de l'examen rattrapage 2024-2025, que fait la syntaxe <code>$(( ))</code> ?</div></div>
+  <ul class="q-options">
+    <li>A) Exécute une commande et capture sa sortie</li>
+    <li>B) Réalise une expansion arithmétique (calcul mathématique)</li>
+    <li>C) Déclare une variable locale</li>
+    <li>D) Importe un autre script</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>$(( ))</code> → <strong>expansion arithmétique</strong> : le shell interprète le contenu comme une expression mathématique<br>• <code>$( )</code> → <strong>substitution de commande</strong> : capture la sortie d'une commande<br><br>Exemples :<pre style="font-family:var(--mono);font-size:0.8rem;background:var(--bg);padding:0.6rem;border-radius:6px;margin:0.5rem 0;">limite_octet=$(( 1024 * limite ))  # arithmétique
+date=$(date)                        # substitution de commande</pre>Source : examen rattrapage 2024-2025 question 5.</div></div></details></div>
+</div>
+
+<!-- Q78 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">78</div><div class="q-text">Dans un script, la ligne <code>for fichier in "$1"/*</code> fait :</div></div>
+  <ul class="q-options">
+    <li>A) Boucle sur tous les fichiers du répertoire courant</li>
+    <li>B) Boucle sur tous les fichiers (non cachés) du répertoire dont le nom est en $1</li>
+    <li>C) Boucle sur tous les arguments du script</li>
+    <li>D) Boucle une seule fois</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>$1</code> = premier argument du script (le nom du répertoire)<br>• <code>"$1"/*</code> = expansion glob sur tous les fichiers (non cachés) de ce répertoire<br>• Les guillemets autour de <code>"$1"</code> gèrent les espaces dans le nom de répertoire<br><br>Question 4 de l'examen rattrapage 2024-2025 :<br>"Elle sert à boucler sur tous les fichiers (non cachés) du répertoire dont le nom est $repertoire."</div></div></details></div>
+</div>
+
+<!-- Q79 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">79</div><div class="q-text">Que se passe-t-il si des guillemets anglais <code>" "</code> sont remplacés par des apostrophes <code>' '</code> dans <code>echo "$variable"</code> ?</div></div>
+  <ul class="q-options">
+    <li>A) Rien ne change</li>
+    <li>B) Les $ sont protégés, l'expansion de variables n'a pas lieu — la chaîne est copiée littéralement</li>
+    <li>C) Une erreur de syntaxe est générée</li>
+    <li>D) La variable est effacée</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">• <code>"$variable"</code> → guillemets doubles : <strong>substitution des variables</strong> → affiche la valeur<br>• <code>'$variable'</code> → apostrophes simples : <strong>littéral</strong>, le <code>$</code> est protégé → affiche <code>$variable</code> tel quel<br><br>Question 6 de l'examen rattrapage 2024-2025 : "les $ sont protégés et l'expansion de variables n'a pas lieu."</div></div></details></div>
+</div>
+
+<!-- Q80 -->
+<div class="q-card">
+  <div class="q-head"><div class="q-num">80</div><div class="q-text">Récapitulatif final — Quelle proposition résume le mieux les 5 règles d'or pour réussir l'examen ? <span class="q-badge badge-hot">🔥 stratégie examen</span></div></div>
+  <ul class="q-options">
+    <li>A) Mémoriser tous les noms de répertoires Linux et leur rôle exact</li>
+    <li>B) Maîtriser : fork() (valeurs de retour), états processus (RSDTZ), chmod (r=4,w=2,x=1), tableau pile/tas, et le pattern fork/exec/wait</li>
+    <li>C) Se concentrer uniquement sur le shell scripting car c'est le plus facile</li>
+    <li>D) Apprendre par cœur tous les codes de retour de tous les appels système</li>
+  </ul>
+  <div class="reveal-wrap"><details><summary>👁 Voir la correction</summary><div class="answer-box"><div class="answer-correct">✅ Bonne réponse : B</div><div class="answer-expl">Les 5 points qui représentent ~70% des points selon l'analyse des annales :<br><br>1. <strong>fork()</strong> : 0 (fils), PID (père), -1 (erreur) — par cœur<br>2. <strong>États processus</strong> : R (running), S (sleeping), D (disk), T (stopped), Z (zombie)<br>3. <strong>chmod</strong> : r=4, w=2, x=1 ; 755=rwxr-xr-x ; 644=rw-r--r--<br>4. <strong>Tableau pile/tas</strong> : auto vs manuel, LIFO vs libre, rapide vs lent, pas de fragmentation vs fragmentation<br>5. <strong>Pattern fork/exec/wait</strong> + section critique protégée par mutex<br><br>Bonne chance pour l'examen ! 🎯</div></div></details></div>
+</div>
+
+<!-- FIN -->
+<div class="sep"></div>
+<div style="background:linear-gradient(135deg,rgba(79,156,249,0.06),rgba(167,139,250,0.06));border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;margin-top:2rem;">
+  <div style="font-size:1.5rem;margin-bottom:0.5rem;">🎯</div>
+  <div style="font-weight:700;font-size:1.1rem;color:var(--acc);margin-bottom:0.4rem;">80 questions terminées !</div>
+  <div style="color:var(--dim);font-size:0.88rem;">Si vous avez répondu correctement à 65+ questions, vous êtes très bien préparé.<br>Repassez en priorité les questions marquées 🔥 que vous avez ratées.</div>
+</div>
+
+</div><!-- end .main -->
+
+<footer class="footer">
+  QCM Programmation Système · L2 MIDO · Université Paris-Dauphine · Pr. K. Zellama · 2024–2025<br>
+  80 questions · Chapitres 1–7 + Support cours + Annales 2023–2025
+</footer>
+
+</body>
+</html>
